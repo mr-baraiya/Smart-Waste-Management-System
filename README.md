@@ -1,122 +1,146 @@
-# Smart Waste Management System
+# Smart Waste Management System (SWMS)
 
-A comprehensive IoT-based solution for optimizing urban waste collection and management. This project automates waste bin monitoring, route planning for collection vehicles, and provides data analytics for municipalities and stakeholders.
-
----
-
-## 🚀 Features
-
-- **Real-time Bin Monitoring:** Collects fill-level data from smart sensors installed in waste bins.
-- **Automated Collection Alerts:** Notifies operators when bins reach a predefined threshold.
-- **Optimized Route Planning:** Calculates efficient routes for waste collection vehicles using AI algorithms.
-- **Data Analytics Dashboard:** Visualizes key metrics, trends, and predictive analytics for waste management.
-- **Scalable Architecture:** Designed for city-wide deployments with support for thousands of bins and sensors.
-- **User & Admin Panels:** Separate interfaces for city officials, operators, and citizens.
+A comprehensive IoT-based solution for optimizing urban waste collection, citizen participation, and sustainable living. SWMS automates bin monitoring, collection planning, and engages users with eco-friendly features to promote recycling and reduce waste.
 
 ---
 
-## 🏗️ Technologies Used
+## Key Features
 
-- **Backend:** Python (Flask/Django), Node.js (Express)
-- **Frontend:** React.js, Bootstrap, Chart.js
-- **IoT & Hardware:** Arduino, Raspberry Pi, Ultrasonic/IR sensors
-- **Database:** MongoDB, PostgreSQL
-- **Cloud & Hosting:** AWS, Heroku, Firebase
-- **Others:** MQTT, REST APIs, Google Maps API
+| Module                             | Description                                                                   |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| **Real-time Bin Monitoring**   | Tracks waste levels using smart sensors and updates live on dashboard.        |
+| **Optimized Route Planning**    | AI-powered algorithms suggest efficient routes for waste collection vehicles. |
+| **Automated Collection Alerts** | Notifies when bins reach capacity, triggering timely pickups.                 |
+| **Data Analytics Dashboard**    | Visualizes waste trends, forecasts, and operational insights.                 |
+| **User & Admin Panels**         | Separate dashboards for citizens, collectors, and city officials.             |
+| **Nearby Recycling Centers**   | Maps closest recycling points for easy citizen access.                        |
+| **Eco-Commerce**               | Platform to discover sustainable, eco-friendly products.                      |
+| **Eco-Chatbot**                | Interactive assistant for recycling tips and app guidance.                    |
+| **Gamified Learning & Quizzes** | Learn through videos, take quizzes, earn badges.                              |
+| **Sell Recyclables**            | Monetize sorted trash by connecting with local collectors.                    |
+| **Waste Classifier (AI)**      | Upload waste images for instant classification & recycling advice.            |
 
 ---
 
-## 📦 Installation
+## 🛠️ Tech Stack
 
-### Prerequisites
+* **Frontend:** React.js, Tailwind CSS, Chart.js, Google Maps API
+* **Backend:** Node.js (Express), Python (FastAPI)
+* **Database:** MongoDB
+* **Messaging:** MQTT, REST APIs
+* **Hosting:** Azure, Render, Vercel, Netlify
 
-- Python 3.x
-- Node.js & npm
-- MongoDB
+---
 
-### Steps
+## 📦 Installation Guide
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/mr-baraiya/Smart-Waste-Management-System.git
-   cd Smart-Waste-Management-System
-   ```
+### Prerequisites:
 
-2. **Backend Setup**
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   python manage.py migrate
-   python manage.py runserver
-   ```
+* Node.js & npm
+* Python 3.x (optional for AI modules)
+* MongoDB
 
-3. **Frontend Setup**
-   ```bash
-   cd ../frontend
-   npm install
-   npm start
-   ```
+### Steps:
 
-4. **Sensor Integration**
-   - Flash Arduino/Raspberry Pi with the provided code in `/hardware`.
-   - Connect sensors as per the wiring diagram.
+# Clone the repository
+```bash
+git clone https://github.com/mr-baraiya/Smart-Waste-Management-System.git
+cd Smart-Waste-Management-System
+```
+# Backend Setup
+```bash
+cd swms-backend
+npm install
 
-5. **Configure Environment Variables**
-   - Create `.env` files in `backend/` and `frontend/` directories as per the `.env.example`.
+# Create .env file
+cat > .env << EOF
+PORT=5000
+MONGODB_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 
+npm run dev
+# Runs on http://localhost:5000
+```
+
+# Frontend Setup
+```bash
+cd ../SWMS-Frontend
+npm install
+npm run dev
+# Runs on http://localhost:5173
+```
+
+# SWMS- Model
+```bash
+cd SWMS-Model
+pip install -r requirements.txt
+
+# Windows
+venv\Scripts\activate
+# macOS/Linux  
+source venv/bin/activate
+
+# Create .env file
+echo "GOOGLE_API_KEY=your_google_api_key" > .env
+
+uvicorn main:app --reload
+# Runs on http://localhost:8000
+
+```
 ---
 
 ## 🖥️ Usage
 
-- Access the admin dashboard at `http://localhost:3000/admin`
-- Sensor devices auto-report bin status via MQTT/REST API.
-- View live bin status, collection routes, and analytics.
+* Access frontend: `http://localhost:5173`
+
+* Admin Dashboard: `/admin`
+
+* Users can:
+
+  * Track bin fill-levels in real-time.
+  * Use Waste Classifier, Eco-Chatbot, Gamified Learning.
+  * Sell recyclables and find nearby centers.
+
+* Sensors auto-report data via MQTT/REST APIs.
+* 
+---
+
+## 🔗 Live Demo
+
+> [https://smartwaste-management.vercel.app](#) *(Deploy to Render/Vercel and update this link)*
 
 ---
 
-## 📚 Documentation
+## 🤝 Contribution Guide
 
-- [System Architecture](docs/architecture.md)
-- [API Reference](docs/api.md)
-- [Hardware Setup](docs/hardware.md)
-
----
-
-## 📸 Screenshots
-
-![Dashboard](docs/images/dashboard.png)
-![Bin Tracking](docs/images/bin-tracking.png)
-
----
-
-## 🤝 Contributing
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork this repository.
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push (`git push origin feature/AmazingFeature`).
+5. Submit a Pull Request.
 
 ---
 
 ## 📝 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE` for full details.
 
 ---
 
 ## 🙏 Acknowledgements
 
-- Open Source IoT sensor libraries
-- Google Maps for routing APIs
-- Community contributors
+* Open-source IoT sensor libraries.
+* Google Maps API for location services.
+* Community contributors.
 
 ---
 
 ## 📬 Contact
 
 **Maintainer:** [mr-baraiya](https://github.com/mr-baraiya)  
-For questions, open an issue or email: mr.baraiya@gmail.com
+email: [baraiyavishalbhai32@gmail.com](mailto:baraiyavishalbhai32@gmail.com)
 
 ---
 
