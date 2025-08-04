@@ -149,55 +149,71 @@ const Login = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen flex items-center justify-center px-6 py-24">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center px-6 py-12 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="h-full w-full bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
+        </div>
+
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-md space-y-8"
+          className="w-full max-w-md space-y-8 relative z-10"
         >
           {/* Header */}
-          <div className="text-center space-y-4">
-            <h1 className="text-3xl font-semibold tracking-tight">
-              Welcome Back
-            </h1>
-            <p className="text-gray-300">Sign in to your SWMS account</p>
+          <div className="text-center space-y-6">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full shadow-xl"
+            >
+              <Lock className="w-10 h-10 text-white" />
+            </motion.div>
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-blue-400 text-transparent bg-clip-text">
+                Welcome Back
+              </h1>
+              <p className="text-slate-300 text-lg mt-2">Sign in to your SWMS account</p>
+            </div>
           </div>
 
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-neutral-900/80 border border-white/5 rounded-xl p-8 space-y-6"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               {apiError && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-red-400 text-sm text-center"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center"
                 >
-                  {apiError}
-                </motion.p>
+                  <p className="text-red-400 text-sm">{apiError}</p>
+                </motion.div>
               )}
+
               {/* Email Field */}
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-semibold text-slate-200 mb-3">
                   Email Address
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-400 w-5 h-5 transition-colors duration-300" />
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="Enter your email"
-                    className={`w-full pl-12 pr-4 py-3 bg-neutral-800 border rounded-lg focus:outline-none transition-colors ${
+                    className={`w-full pl-12 pr-4 py-4 bg-white/5 backdrop-blur-sm border rounded-xl focus:outline-none transition-all duration-300 text-white placeholder-slate-400 ${
                       errors.email
-                        ? "border-red-500 focus:border-red-400"
-                        : "border-white/10 focus:border-lime-400"
+                        ? "border-red-500/50 focus:border-red-400 focus:shadow-lg focus:shadow-red-500/20"
+                        : "border-white/10 focus:border-emerald-400/50 focus:shadow-lg focus:shadow-emerald-500/20"
                     }`}
                   />
                 </div>
@@ -205,8 +221,9 @@ const Login = () => {
                   <motion.p
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-red-400 text-sm mt-1"
+                    className="text-red-400 text-sm mt-2 flex items-center gap-2"
                   >
+                    <span className="w-1 h-1 bg-red-400 rounded-full"></span>
                     {errors.email}
                   </motion.p>
                 )}
@@ -214,27 +231,27 @@ const Login = () => {
 
               {/* Password Field */}
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-semibold text-slate-200 mb-3">
                   Password
                 </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-400 w-5 h-5 transition-colors duration-300" />
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="Enter your password"
-                    className={`w-full pl-12 pr-12 py-3 bg-neutral-800 border rounded-lg focus:outline-none transition-colors ${
+                    className={`w-full pl-12 pr-12 py-4 bg-white/5 backdrop-blur-sm border rounded-xl focus:outline-none transition-all duration-300 text-white placeholder-slate-400 ${
                       errors.password
-                        ? "border-red-500 focus:border-red-400"
-                        : "border-white/10 focus:border-lime-400"
+                        ? "border-red-500/50 focus:border-red-400 focus:shadow-lg focus:shadow-red-500/20"
+                        : "border-white/10 focus:border-emerald-400/50 focus:shadow-lg focus:shadow-emerald-500/20"
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-emerald-400 transition-colors duration-300 p-1"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -247,8 +264,9 @@ const Login = () => {
                   <motion.p
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-red-400 text-sm mt-1"
+                    className="text-red-400 text-sm mt-2 flex items-center gap-2"
                   >
+                    <span className="w-1 h-1 bg-red-400 rounded-full"></span>
                     {errors.password}
                   </motion.p>
                 )}
@@ -256,16 +274,16 @@ const Login = () => {
 
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-3 cursor-pointer group">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 rounded border-white/20 bg-neutral-800 text-lime-500 focus:ring-lime-400 focus:ring-2"
+                    className="w-5 h-5 rounded border-white/20 bg-white/5 text-emerald-500 focus:ring-emerald-400 focus:ring-2 focus:ring-offset-0 transition-all duration-300"
                   />
-                  <span className="text-gray-300">Remember me</span>
+                  <span className="text-slate-300 group-hover:text-white transition-colors duration-300">Remember me</span>
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-lime-400 hover:text-lime-300 transition-colors"
+                  className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300 font-medium"
                 >
                   Forgot password?
                 </Link>
@@ -275,46 +293,35 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-lime-500 hover:bg-lime-400 disabled:bg-lime-600 disabled:cursor-not-allowed text-neutral-950 rounded-lg transition-colors font-medium"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-white rounded-xl transition-all duration-300 font-semibold shadow-xl hover:shadow-emerald-500/25 transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-neutral-950/30 border-t-neutral-950 rounded-full animate-spin"></div>
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : (
                   <>
                     Sign In
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-5 h-5" />
                   </>
                 )}
               </button>
             </form>
-
-            {/* Divider */}
-            {/* <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-neutral-900 text-gray-400">
-                  Or continue with
-                </span>
-              </div>
-            </div> */}
           </motion.div>
 
           {/* Sign Up Link */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-center"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-center bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
           >
-            <p className="text-gray-400">
+            <p className="text-slate-300">
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="text-lime-400 hover:text-lime-300 transition-colors font-medium"
+                className="text-emerald-400 hover:text-emerald-300 transition-colors duration-300 font-semibold inline-flex items-center gap-1"
               >
                 Sign up here
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </p>
           </motion.div>
