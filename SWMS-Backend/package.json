@@ -4,8 +4,8 @@
   "description": "Smart Waste Management System Backend (Node.js + Express)",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"No test specified\" && exit 0"
   },
   "keywords": [

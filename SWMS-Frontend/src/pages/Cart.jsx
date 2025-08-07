@@ -1,9 +1,26 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCart } from "../context/CartContext"
 
 const Cart = () => {
   const { cartItems, getTotalPrice, removeFromCart } = useCart()
   const [loading, setLoading] = useState(false)
+  const [razorpayKey, setRazorpayKey] = useState('')
+
+  // Get Razorpay key from backend
+  useEffect(() => {
+    const getRazorpayKey = async () => {
+      try {
+        const response = await fetch("http://localhost:9705/razorpay/get-key")
+        const data = await response.json()
+        if (data.success) {
+          setRazorpayKey(data.key)
+        }
+      } catch (error) {
+        console.error("❌ Failed to get Razorpay key:", error)
+      }
+    }
+    getRazorpayKey()
+  }, [])
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -17,6 +34,13 @@ const Cart = () => {
 
   const payNow = async () => {
     setLoading(true)
+
+    // Check if we have the Razorpay key
+    if (!razorpayKey) {
+      alert("❌ Payment system not configured properly. Please try again later.")
+      setLoading(false)
+      return
+    }
 
     const isScriptLoaded = await loadRazorpayScript()
     if (!isScriptLoaded) {
@@ -35,27 +59,62 @@ const Cart = () => {
       })
 
       const data = await response.json()
-      if (!data || !data.order || !data.order.id) {
-        throw new Error("Invalid Razorpay order response")
+      
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to create order")
+      }
+
+      if (!data.order || !data.order.id) {
+        throw new Error("Invalid order response from server")
       }
 
       const options = {
-        key: "rzp_test_4ex35mPBKEB3Rb",
+        key: razorpayKey, // Use key from backend
         amount: data.order.amount,
         currency: "INR",
-        name: "Eco Store",
-        description: "Thank you for shopping!",
+        name: "SWMS Eco Store",
+        description: "Thank you for shopping with us!",
         order_id: data.order.id,
-        handler: function (response) {
-          alert("✅ Payment successful!\nPayment ID: " + response.razorpay_payment_id)
+        handler: async function (response) {
+          try {
+            // Verify payment on backend
+            const verifyResponse = await fetch("http://localhost:9705/razorpay/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              }),
+            })
+
+            const verifyData = await verifyResponse.json()
+            
+            if (verifyData.success) {
+              alert("✅ Payment successful!\nPayment ID: " + response.razorpay_payment_id)
+              // Clear cart or redirect to success page
+              window.location.reload() // Simple reload for now
+            } else {
+              alert("❌ Payment verification failed. Please contact support.")
+            }
+          } catch (error) {
+            console.error("❌ Payment verification failed:", error)
+            alert("❌ Payment verification failed. Please contact support.")
+          }
         },
         prefill: {
-          name: "Dhruv",
-          email: "example@gmail.com",
+          name: "Customer",
+          email: "customer@example.com",
           contact: "9999999999"
         },
         theme: {
           color: "#84cc16"
+        },
+        modal: {
+          ondismiss: function() {
+            console.log("Payment modal closed")
+            setLoading(false)
+          }
         }
       }
 
@@ -63,8 +122,7 @@ const Cart = () => {
       razorpayObject.open()
     } catch (err) {
       console.error("❌ Payment initiation failed:", err)
-      alert("❌ Payment failed. Please try again.")
-    } finally {
+      alert(`❌ Payment failed: ${err.message}`)
       setLoading(false)
     }
   }
@@ -97,10 +155,12 @@ const Cart = () => {
 
           <button
             onClick={payNow}
-            disabled={loading}
-            className="mt-4 px-6 py-3 bg-lime-500 hover:bg-lime-400 text-neutral-950 rounded-lg font-bold disabled:opacity-50"
+            disabled={loading || cartItems.length === 0 || !razorpayKey}
+            className="mt-4 px-6 py-3 bg-lime-500 hover:bg-lime-400 text-neutral-950 rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Processing..." : "Pay with Razorpay"}
+            {loading ? "Processing..." : 
+             !razorpayKey ? "Loading Payment..." : 
+             "Pay with Razorpay"}
           </button>
         </div>
       )}
