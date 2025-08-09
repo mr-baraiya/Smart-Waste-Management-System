@@ -214,7 +214,7 @@ uvicorn main:app --reload
 
 ## Live Demo
 
-> [https://smartwaste-management.vercel.app](#) *(Deploy to Render/Vercel and update this link)*
+> [https://smart-waste-management-system-ruby.vercel.app/](#) *(Deploy to Render/Vercel and update this link)*
 
 ---
 
